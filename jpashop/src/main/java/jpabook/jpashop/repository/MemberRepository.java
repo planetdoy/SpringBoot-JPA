@@ -27,7 +27,7 @@ public class MemberRepository {
     }
 
     public List<Member> findAll() {
-        List<Member> result = em.createQuery("select m from Member me", Member.class)
+        List<Member> result = em.createQuery("select m from Member m", Member.class)
                 .getResultList();
         return result;
     }
