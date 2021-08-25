@@ -19,6 +19,8 @@ public class ItemRepository {
             em.persist(item);
         } else {
             em.merge(item);
+            //변경되지 않은 값이 null 로 변경된다.
+            //사용하지 않는 것이 좋다.
         }
     }
 

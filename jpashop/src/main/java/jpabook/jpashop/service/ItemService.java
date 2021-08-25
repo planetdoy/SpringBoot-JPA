@@ -1,5 +1,6 @@
 package jpabook.jpashop.service;
 
+import jpabook.jpashop.domain.item.Book;
 import jpabook.jpashop.domain.item.Item;
 import jpabook.jpashop.repository.ItemRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,19 @@ public class ItemService {
     @Transactional
     public void saveItem(Item item) {
         itemRepository.save(item);
+    }
+
+    @Transactional
+    public void updateItem(Long itemId, String name, int price, int stockQuantity) {
+        Item findItem = itemRepository.findOne(itemId);
+
+        /*findItem.setName(name);
+        findItem.setPrice(price);
+        findItem.setStockQuantity(stockQuantity);*/
+
+        //setter 를 사용하는 것 보다 메서드 생성이 더 나은 방법이다
+
+        findItem.change(name,price,stockQuantity);
     }
 
     public List<Item> findItems() {
