@@ -17,10 +17,17 @@ public class JpaMain {
 
         //정석
         try {
-            Member member = new Member(200L, "member200");
-            em.persist(member);
+            Member member = em.find(Member.class, 150L);
+            member.setName("AAAAA");
 
-            em.flush();
+            //영속 컨텍스트에서 분리
+            //em.detach(member);
+
+            //연속 컨텍스트 비우기
+            em.clear();
+
+            //영속 컨텍스트 닫기
+            //em.close();
 
             System.out.println("================================");
             tx.commit();
