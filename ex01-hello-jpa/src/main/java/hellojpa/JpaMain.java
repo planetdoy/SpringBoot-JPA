@@ -17,24 +17,25 @@ public class JpaMain {
 
         //정석
         try {
+
+            /*//비영속
             Member member = new Member();
-            member.setId(2L);
-            member.setName("HelloB");
+            member.setId(101L);
+            member.setName("HelloJpa");
+
+            //영속
+            System.out.println("== BEFORE ==");
             em.persist(member);
+            System.out.println("== AFTER ==");*/
 
-            /*Member findMember = em.find(Member.class, 1L);
-            System.out.println("findMember.getId() = " + findMember.getId());
-            System.out.println("findMember.getName() = " + findMember.getName());
-            findMember.setName("HelloJPA");*/
+            Member findMember1 = em.find(Member.class, 101L);
+            Member findMember2 = em.find(Member.class, 101L);
 
-            /*List<Member> result = em.createQuery("select m from Member as m", Member.class)
-                    .setFirstResult(1)
-                    .setMaxResults(5)
-                    .getResultList();
+            //영속 엔티티의 동일성 보장
+            System.out.println("result = " + (findMember1 == findMember2));
 
-            for (Member member : result) {
-                System.out.println("member.getName() = " + member.getName());
-            }*/
+            /*System.out.println("findMember.getId() = " + findMember.getId());
+            System.out.println("findMember.getName() = " + findMember.getName());*/
 
             tx.commit();
         } catch (Exception e) {
