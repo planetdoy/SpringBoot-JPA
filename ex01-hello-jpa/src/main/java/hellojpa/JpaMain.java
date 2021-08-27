@@ -31,13 +31,13 @@ public class JpaMain {
             em.flush();
             em.clear();
 
-            //연관관계가 없는 상태
-//            Member findMember = em.find(Member.class, member.getId());
-//            Team findTeam = em.find(Team.class, member.getTeamId());
-
-            //연관 관계
             Member findMember = em.find(Member.class, member.getId());
-            Team findTeam = em.find(Team.class, findMember.getTeam());
+
+            List<Member> members = findMember.getTeam().getMembers();
+
+            for (Member member1 : members) {
+                System.out.println("member1.getUsername() = " + member1.getUsername());
+            }
 
             tx.commit();
         } catch (Exception e) {
