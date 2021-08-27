@@ -17,17 +17,12 @@ public class JpaMain {
 
         //정석
         try {
-            Member member = em.find(Member.class, 150L);
-            member.setName("AAAAA");
+            Member member = new Member();
+            member.setId(1L);
+            member.setUsername("A");
+            member.setRoleType(RoleType.ADMIN);
 
-            //영속 컨텍스트에서 분리
-            //em.detach(member);
-
-            //연속 컨텍스트 비우기
-            em.clear();
-
-            //영속 컨텍스트 닫기
-            //em.close();
+            em.persist(member);
 
             System.out.println("================================");
             tx.commit();
