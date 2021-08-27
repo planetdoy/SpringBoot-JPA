@@ -10,13 +10,6 @@ public class Member {
     @Column(name = "MEMBER_ID")
     private Long id;
 
-    /*@Column(name = "TEAM_ID")
-    private Long teamId;*/
-
-    @ManyToOne
-    @JoinColumn(name = "TEAM_ID")
-    private Team team;
-
     @Column(name = "USERNAME", nullable = false)
     private String username;
 
@@ -27,19 +20,6 @@ public class Member {
     public void setId(Long id) {
         this.id = id;
     }
-
-    public Team getTeam() {
-        return team;
-    }
-
-    public void setTeam(Team team) {
-        this.team = team;
-    }
-
-    /*public void changeTeam(Team team) {
-        this.team = team;
-        team.getMembers().add(this);
-    }*/
 
     public String getUsername() {
         return username;
