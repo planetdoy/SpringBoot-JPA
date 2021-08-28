@@ -13,13 +13,21 @@ public class Parent {
 
     private String name;
 
-    @OneToMany(mappedBy = "parent",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "parent",cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Child> children = new ArrayList<>();
 
     //영속 편의 메서드
     public void addChild(Child child) {
         children.add(child);
         child.setParent(this);
+    }
+
+    public List<Child> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<Child> children) {
+        this.children = children;
     }
 
     public Long getId() {
