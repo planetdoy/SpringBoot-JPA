@@ -25,7 +25,7 @@ public class Order extends BaseEntity{
     @Enumerated(value = EnumType.STRING)
     private OrderStatus orderStatus;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "DELIVERY_ID")
     private Delivery delivery;
 
