@@ -16,27 +16,26 @@ public class JpaMain {
         tx.begin();
 
         try {
+            Team team = new Team();
+            team.setName("teamA");
+            em.persist(team);
 
             Member member1 = new Member();
             member1.setUsername("member1");
+            member1.setTeam(team);
             em.persist(member1);
+
 
             em.flush();
             em.clear();
 
-//            Member findMember = em.find(Member.class, member.getId());
-            Member refMember = em.getReference(Member.class, member1.getId());
-            System.out.println("findMember.getUsername() = " + refMember.getUsername());//proxy
-            refMember.getUsername();
+            Member m = em.find(Member.class, member1.getId());
+            System.out.println("m = " + m.getTeam().getClass());
 
-            //프록시 인스턴스 초기화 여부 확인
-            //System.out.println("isLoaded = " + emf.getPersistenceUnitUtil().isLoaded(refMember));
-
-            //클래스 확인 방법
-            //System.out.println("refMember.getClass() = " + refMember.getClass());
-
-            //강제 초기화
-            Hibernate.initialize(refMember);
+            System.out.println("===============================");
+            Team tempTeam = m.getTeam(); // 초기화 x
+            m.getTeam().getName(); //초기화 o
+            System.out.println("===============================");
 
             tx.commit();
         } catch (Exception e) {
