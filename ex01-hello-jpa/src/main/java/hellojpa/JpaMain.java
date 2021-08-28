@@ -17,11 +17,16 @@ public class JpaMain {
         tx.begin();
 
         try {
+            Address address = new Address("CITY", "STREET", "ZIPCODE");
+
             Member member = new Member();
             member.setUsername("member1");
-            member.setHomeAddress(new Address("CITY", "STREET", "ZIPCODE"));
-            member.setWorkPeriod(new Period());
+            member.setHomeAddress(address);
             em.persist(member);
+
+            //객체 타입의 값은 항상 복사해서 사용
+            Address newAddress = new Address("NEW_CITY", address.getStreet(), address.getZipcode());
+            member.setHomeAddress(newAddress);
 
             tx.commit();
         } catch (Exception e) {
