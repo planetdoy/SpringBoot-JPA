@@ -1,6 +1,7 @@
 package jpql;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.List;
 
 public class JpaMain {
@@ -11,27 +12,28 @@ public class JpaMain {
         tx.begin();
 
         try {
+            Team team = new Team();
+            em.persist(team);
+
             Member member = new Member();
             member.setUsername("관리자입니다");
             member.setAge(10);
             member.setType(MemberType.ADMIN);
+
+            member.setTeam(team);
 
             em.persist(member);
 
             em.flush();
             em.clear();
 
-//            String query = "select concat('a', 'b') from Member m";
-//            String query = "select substring(m.username,2,3) from Member m";
-//            String query = "select locate('bc','abcdefg') from Member m";
-//            String query = "select size(t.members) from Team t";
-            String query = "select index(t.members) from Team t";
-            List<Integer> resultList = em.createQuery(query, Integer.class)
-                    .getResultList();
+//            String query = "select m.username from Member m";
+            String query = "select m.username from Team t join t.members m";
 
-            for (Integer result : resultList) {
-                System.out.println("result = " + result);
-            }
+            String resultList = em.createQuery(query, String.class)
+                    .getSingleResult();
+
+            System.out.println("resultList = " + resultList);
 
             tx.commit();
         } catch (Exception e) {
