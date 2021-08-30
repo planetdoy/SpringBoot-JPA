@@ -11,16 +11,9 @@ public class JpaMain {
         tx.begin();
 
         try {
-            Team team = new Team();
-            team.setName("teamA");
-            em.persist(team);
-
             Member member = new Member();
-//            member.setUsername("member1");
-//            member.setUsername(null);
-            member.setUsername("관리자");
+            member.setUsername("관리자입니다");
             member.setAge(10);
-            member.setTeam(team);
             member.setType(MemberType.ADMIN);
 
             em.persist(member);
@@ -28,22 +21,15 @@ public class JpaMain {
             em.flush();
             em.clear();
 
-            /*String query =
-                    "select "+
-                            "case when m.age <= 10 then '학생요금' " +
-                            "     when m.age >= 60 then '경로요금' " +
-                            "     else '일반요금' " +
-                            "end "+
-                    "from Member m";*/
-
-            /*String query = "select coalesce(m.username, '이름 없는 회원') from Member m";*/
-
-            String query = "select nullif(m.username, '관리자') from Member m";
-
-            List<String> resultList = em.createQuery(query, String.class)
+//            String query = "select concat('a', 'b') from Member m";
+//            String query = "select substring(m.username,2,3) from Member m";
+//            String query = "select locate('bc','abcdefg') from Member m";
+//            String query = "select size(t.members) from Team t";
+            String query = "select index(t.members) from Team t";
+            List<Integer> resultList = em.createQuery(query, Integer.class)
                     .getResultList();
 
-            for (String result : resultList) {
+            for (Integer result : resultList) {
                 System.out.println("result = " + result);
             }
 
