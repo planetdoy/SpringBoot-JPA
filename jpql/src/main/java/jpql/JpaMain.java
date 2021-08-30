@@ -1,6 +1,7 @@
 package jpql;
 
 import javax.persistence.*;
+import java.util.List;
 
 public class JpaMain {
     public static void main(String[] args) {
@@ -15,16 +16,29 @@ public class JpaMain {
             member.setAge(10);
             em.persist(member);
 
-            Member singleResult = em.createQuery("select m from Member as m where m.username = :username", Member.class)
-                    .setParameter("username", "member1")
-                    .getSingleResult();
-            System.out.println("singleResult.getUsername() = " + singleResult.getUsername());
+            em.flush();
+            em.clear();
 
-            //try, catch
-//            Member member1 = query1.getSingleResult();
+            List<MemberDTO> resultList = em.createQuery("select new jpql.MemberDTO(m.username, m.age) from Member m", MemberDTO.class)
+                    .getResultList();
 
-            /*TypedQuery<String> query2 = em.createQuery("select m.username from Member as m", String.class);
-            Query query3 = em.createQuery("select m from Member as m");*/
+            MemberDTO memberDTO = resultList.get(0);
+            System.out.println("memberDTO.getUsername() = " + memberDTO.getUsername());
+            System.out.println("memberDTO.getAge() = " + memberDTO.getAge());
+
+            /* List<Member> result = em.createQuery("select m from Member as m", Member.class)
+                    .getResultList();
+            
+            List<Team> result2 = em.createQuery("select m.team from Member as m", Team.class)
+                    .getResultList();*/
+
+           /* List<Object[]> resultList = em.createQuery("select m.username, m.age from Member as m")
+                    .getResultList();
+
+            Object[] result = resultList.get(0);
+
+            System.out.println("result.username = " + result[0]);
+            System.out.println("result.age = " + result[1]);*/
 
             tx.commit();
         } catch (Exception e) {
