@@ -12,28 +12,48 @@ public class JpaMain {
         tx.begin();
 
         try {
-            Team team = new Team();
-            em.persist(team);
+            Team teamA = new Team();
+            teamA.setName("teamA");
+            em.persist(teamA);
 
-            Member member = new Member();
-            member.setUsername("관리자입니다");
-            member.setAge(10);
-            member.setType(MemberType.ADMIN);
+            Team teamB = new Team();
+            teamB.setName("teamB");
+            em.persist(teamB);
 
-            member.setTeam(team);
+            Member member1 = new Member();
+            member1.setUsername("member1");
+            member1.setTeam(teamA);
+            em.persist(member1);
 
-            em.persist(member);
+            Member member2 = new Member();
+            member2.setUsername("member2");
+            member2.setTeam(teamA);
+            em.persist(member2);
+
+            Member member3 = new Member();
+            member3.setUsername("member3");
+            member3.setTeam(teamB);
+            em.persist(member3);
 
             em.flush();
             em.clear();
 
-//            String query = "select m.username from Member m";
-            String query = "select m.username from Team t join t.members m";
+//            String query = "select m from Member m";
+//            String query = "select m from Member m join fetch m.team";
+            String query = "select t from Team t join fetch t.members";
+            List<Team> resultList = em.createQuery(query, Team.class)
+                    .getResultList();
 
-            String resultList = em.createQuery(query, String.class)
-                    .getSingleResult();
+            for (Team team : resultList) {
+                System.out.println("team = " + team.getName() + ", " + team.getMembers().size());
+                
+//                System.out.println("member = " + member.getUsername() +", "+ member.getTeam().getName());
+                // 회원1, 팀A(SQL)
+                // 회원2, 팀A(1차캐시)
+                // 회원3, 팀B(SQL)
 
-            System.out.println("resultList = " + resultList);
+                // 회원 100명 -> N + 1
+            }
 
             tx.commit();
         } catch (Exception e) {
