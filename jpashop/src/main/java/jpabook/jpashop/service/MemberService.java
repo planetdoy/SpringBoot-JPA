@@ -11,6 +11,7 @@ import java.util.List;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
+
 public class MemberService {
 
     private final MemberRepository memberRepository;
@@ -42,5 +43,11 @@ public class MemberService {
 
     public Member findMember(Long memberId) {
         return memberRepository.findOne(memberId);
+    }
+
+    @Transactional
+    public void update(Long id, String name) {
+        Member findMember = memberRepository.findOne(id);
+        findMember.setName(name);
     }
 }
