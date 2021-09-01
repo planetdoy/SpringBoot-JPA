@@ -102,6 +102,13 @@ public class OrderRepository {
         ).getResultList();
     }
 
+    /**
+     *     컬렉션 페치 조인 시 페이징이 불가능합니다.
+     *     Hibernate 가 자체적으로 메모리에 페이징 처리를 하게 됨으로 굉장히 위험합니다.
+     *
+     *     컬렉션 페치 조인은 둘 이상 사용하지 않습니다.
+     *     1 : N : M -> 1 * N * M 으로 값이 불어날 수 있습니다.
+     */
     public List<Order> findAllWithItem() {
         return em.createQuery(
                 "select distinct o from Order o" +
