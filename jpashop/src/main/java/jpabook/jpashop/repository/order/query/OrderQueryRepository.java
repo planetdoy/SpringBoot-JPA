@@ -67,4 +67,26 @@ public class OrderQueryRepository {
 
         return result;
     }
+
+    /**
+     *
+     *     private Long orderId;
+     *     private String name;
+     *     private LocalDateTime orderDate;
+     *     private OrderStatus orderStatus;
+     *     private Address address;
+     *
+     *     private String itemName;
+     *     private int orderPrice;
+     *     private int count;
+     */
+    public List<OrderFlatDto> findAllByDto_flat() {
+        return em.createQuery(
+                "select new jpabook.jpashop.repository.order.query.OrderFlatDto(o.id, m.name, o.orderDate, o.status, d.address, i.itemName, oi.orderPrice, oi.count)" +
+                        " from Order o" +
+                        " join o.member m" +
+                        " join o.delivery d" +
+                        " join o.orderItems oi" +
+                        " join oi.item i", OrderFlatDto.class).getResultList();
+    }
 }
